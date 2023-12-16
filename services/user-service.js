@@ -9,8 +9,10 @@ class UserService{
     }
 
     async createUser(email, password){
-        const user = await db.query('insert into users(email, password) values ($1, $2)', [email, await bcrypt.hash(password, 3)])
-        return user;
+        const hashPassword = await bcrypt.hash(password, 3)
+        const result = await db.query('insert into users(email, password) values ($1, $2)', [email, hashPassword])
+        return result.rows;
+
     }
 }
 
